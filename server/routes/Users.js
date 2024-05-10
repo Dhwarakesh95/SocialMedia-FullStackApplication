@@ -34,6 +34,33 @@ router.post("/login", async (req, res) => {
   });
 });
 
+router.post("/google-login", async (req, res) => {
+  const { email, given_name } = req.body;
+
+  try {
+    let user = await Users.findOne({ where: { username: given_name } });
+
+    if (!user) {
+
+      const hash = await bcrypt.hash(given_name, 10);
+      user = await Users.create({
+        username: given_name,
+        password: hash,
+      });
+    }
+
+    const accessToken = sign(
+      { username: user.username, id: user.id },
+      "importantsecret"
+    );
+
+    return res.json({ token: accessToken, username: user.username, id: user.id });
+  } catch (error) {
+    console.error("Google login error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.get("/auth", validateToken, (req, res) => {
   res.json(req.user);
 });
