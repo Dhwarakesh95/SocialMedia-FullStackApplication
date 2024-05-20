@@ -7,6 +7,10 @@ import './App.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+<<<<<<< HEAD
+=======
+    <GoogleOAuthProvider clientId=>
+>>>>>>> 3ef9c56 (Update index.js)
     <App />
   </React.StrictMode>
 );
